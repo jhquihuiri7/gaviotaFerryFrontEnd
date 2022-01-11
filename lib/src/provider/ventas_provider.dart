@@ -40,7 +40,7 @@ class VentasProvider extends ChangeNotifier {
   bool get dropdownValueChange => _dropdownValueChange;
   set dropdownValueChange(bool value){
     _dropdownValueChange = value;
-    notifyListeners();
+    //notifyListeners();
   }
   ReservasModel _reservasModel = ReservasModel(
       id: "NA",

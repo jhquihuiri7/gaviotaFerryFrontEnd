@@ -8,14 +8,21 @@ class PdfApi {
     required Document pdf,
   }) async {
     final bytes = await pdf.save();
-    print("DIRECTORIO");
 
     final blob = html.Blob([bytes], 'application/pdf');
     final url = html.Url.createObjectUrlFromBlob(blob);
-    print(url);
-    html.window.open(url, "_blank");
-    html.Url.revokeObjectUrl(url);
-    print('Hola');
+    //html.window.open(url, "_blank");
+    //html.Url.revokeObjectUrl(url);
 
+    final anchor = html.document.createElement('a') as html.AnchorElement
+      ..href = url
+      ..style.display = 'none'
+      ..download = "$name.pdf";
+    html.document.body?.children.add(anchor);
+
+    anchor.click();
+
+    html.document.body?.children.remove(anchor);
+    html.Url.revokeObjectUrl(url);
   }
 }

@@ -66,14 +66,14 @@ class PdfInvoiceApi {
         return [
           pw.Column(
             children: [
-              pw.SizedBox(height: 30),
+              pw.SizedBox(height: 20),
               PDFParts().buildTable(context, type, getStringDate(DateTime.fromMicrosecondsSinceEpoch(dateEpoch!)), items),
               PDFParts().buildFooter(context),
             ]
          )
         ];
       }));
-    return PdfApi.saveDocument(name: 'pdfDiario.pdf', pdf: pdf);
+    return PdfApi.saveDocument(name: "${getStringDate(DateTime.fromMicrosecondsSinceEpoch(dateEpoch!))} $type", pdf: pdf);
   }
   pw.Widget _buildHeader(pw.Context context){
 

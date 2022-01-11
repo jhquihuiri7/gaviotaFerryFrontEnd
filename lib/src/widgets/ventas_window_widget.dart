@@ -1,3 +1,4 @@
+import 'package:darwin_scuba_dive/src/provider/utils_provider.dart';
 import 'package:darwin_scuba_dive/src/utils/export_widgets.dart';
 import 'package:darwin_scuba_dive/src/utils/logic_daily.dart';
 import 'package:darwin_scuba_dive/src/utils/logic_ventas.dart';
@@ -17,6 +18,7 @@ class _VentasWindowWidgetState extends State<VentasWindowWidget> {
   @override
   Widget build(BuildContext context) {
     final ventasProvider = Provider.of<VentasProvider>(context);
+    final utilsProvider = Provider.of<UtilsProvider>(context);
     return Card(
       child: Container(
         padding: const EdgeInsets.all(20),
@@ -62,7 +64,7 @@ class _VentasWindowWidgetState extends State<VentasWindowWidget> {
                   SizedBox(width: 40),
                   TextFormFieldWidget(width: 150, text: "Edad"),
                   SizedBox(width: 40),
-                  DropDownWidget(option: "edad",),
+                  DropDownWidget(option: "precio",),
                 ],
               ),
               const SizedBox(height: 10),
@@ -83,19 +85,26 @@ class _VentasWindowWidgetState extends State<VentasWindowWidget> {
                   ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
+                          utilsProvider.addUserButton = false;
                           _formKey.currentState!.save();
                           Uri url = LogicVentas().addUserUrl(context);
                           http.Response response = await http.post(url);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Reserva ingresada correctamente')),
-                          );
                           ventasProvider.dateVenta = DateTime.now();
                           ventasProvider.reservasModel.fViaje = LogicVentas().getDateTimeNow().toString();
-
+                          if (response.statusCode == 200) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Reserva ingresada correctamente')),
+                            );
+                          }else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('No se pudo ingresar usuario. Problemas de conexion')),
+                            );
+                          }
+                          utilsProvider.addUserButton = true;
                         }
                       },
                       style: ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor),
-                      child: const Text("Agregar pasajero")
+                      child: (utilsProvider.addUserButton) ? Text("Agregar pasajero") : Container(height: 15,width: 15, child: const CircularProgressIndicator(color: Colors.white, strokeWidth: 3,))
                   ),
                   SizedBox(width: 20),
                   Switch(

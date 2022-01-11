@@ -2,6 +2,7 @@ import 'package:darwin_scuba_dive/src/pages/diarios_page.dart';
 import 'package:darwin_scuba_dive/src/pages/login_page.dart';
 import 'package:darwin_scuba_dive/src/pages/reportes_page.dart';
 import 'package:darwin_scuba_dive/src/pages/ventas_page.dart';
+import 'package:darwin_scuba_dive/src/provider/utils_provider.dart';
 import 'package:darwin_scuba_dive/src/provider/ventas_provider.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_)=>VentasProvider())
+        ChangeNotifierProvider(create: (_)=>VentasProvider()),
+        ChangeNotifierProvider(create: (_)=>UtilsProvider())
       ],
       child: MaterialApp(
         localizationsDelegates: const [

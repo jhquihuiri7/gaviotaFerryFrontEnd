@@ -11,16 +11,18 @@ class DropDownWidget extends StatefulWidget {
 
 class _DropDownWidgetState extends State<DropDownWidget> {
   String dropdownValue = "";
+  bool dropdownValueChange = false;
   @override
   Widget build(BuildContext context) {
+    //String dropdownValue = (widget.option == "ruta") ? "SC-SX" : (widget.option == "precio") ? "25" : "Permanente";
     final ventasProvider = Provider.of<VentasProvider>(context);
     String _selectInitialValue(){
       if (widget.option == "ruta"){
         ventasProvider.reservasModel.ruta = "SC-SX";
         return "SC-SX";
-      }else if (widget.option == "edad"){
-        ventasProvider.reservasModel.edad = 25;
-        return "${ventasProvider.initialValue}";
+      }else if (widget.option == "precio"){
+        ventasProvider.reservasModel.precio = 25;
+        return "25";
       }else {
         ventasProvider.reservasModel.status = "Permanente";
         return "Permanente";
@@ -29,21 +31,14 @@ class _DropDownWidgetState extends State<DropDownWidget> {
     List<String> _selectValueOptions(){
       if (widget.option == "ruta"){
         return <String>["SC-SX", 'SX-SC'];
-      }else if (widget.option == "edad"){
-        //if (ventasProvider.initialValue == 0){
-        //  return <String>["0"];
-        //}else if (ventasProvider.initialValue == 25){
-        //  return <String>["25", "30","20"];
-        //}else {
-        //  return <String>["15"];
-        //}
+      }else if (widget.option == "precio"){
         return <String>["0", "15","20","25","30"];
       }else {
         return <String>["Permanente", "Temporal","Transeunte","Turista"];
       }
     }
     String value(){
-      if (ventasProvider.dropdownValueChange == false){
+      if (dropdownValueChange == false){
         dropdownValue = _selectInitialValue();
       }
       return dropdownValue;
@@ -58,14 +53,13 @@ class _DropDownWidgetState extends State<DropDownWidget> {
         color: Colors.grey,
       ),
       onChanged: (String? newValue) {
-        ventasProvider.dropdownValueChange = true;
+        dropdownValueChange = true;
         setState(() {
           dropdownValue = newValue!;
           if (widget.option == "ruta"){
             ventasProvider.reservasModel.ruta = newValue;
-          } else if (widget.option == "edad"){
-            
-            ventasProvider.reservasModel.edad = (int.tryParse(newValue)==null) ? 0 : int.parse(newValue);
+          } else if (widget.option == "precio"){
+            ventasProvider.reservasModel.precio = int.parse(newValue);
           }else {
             ventasProvider.reservasModel.status = newValue;
           }

@@ -11,56 +11,26 @@ class LogicDaily {
   Future<List<ReservasModel>> getDailyData (BuildContext context, String time)async {
     final ventasProvider = Provider.of<VentasProvider>(context, listen: false);
     List<ReservasModel> list = [];
-
-    Uri url = Uri.parse("http://localhost:8080/getDailyData/$time/${ventasProvider.dateDaily}");
+    Uri url = Uri.parse("https://gaviota-ferry-backend.uc.r.appspot.com/getDailyData/$time/${ventasProvider.dateDaily}");
     http.Response response = await http.get(url);
-
-    final List<dynamic> resp = jsonDecode(response.body);
-    resp.forEach((element) {
-      final ReservasModel reservas = ReservasModel.fromJson(element);
-      list.add(reservas);
-    });
-    print(list);
+    if (response.body.length > 5) {
+      final List<dynamic> resp = jsonDecode(response.body);
+      resp.forEach((element) {
+        final ReservasModel reservas = ReservasModel.fromJson(element);
+        list.add(reservas);
+      });
+    }
     return list;
   }
   Future updateData (ReservasModel item)async {
-    Uri url = Uri.parse("http://localhost:8080/updateUser/${item.id}/${item.fViaje}/"+
-        "${item.ruta}/${item.referencia}/${item.proveedor}/${item.cedula}/${item.telefono}/"+
-        "${item.status}/${item.nacionalidad}/${item.observacion}/${item.fReserva}/${item.edad}/"+
+    Uri url = Uri.parse("https://gaviota-ferry-backend.uc.r.appspot.com/updateUser/${item.id}/${item.fViaje}/"+
+        "${item.ruta}/${(item.referencia == "" ? "NA" : item.referencia)}/${(item.proveedor == "") ? "NA" : item.proveedor}/"+
+        "${(item.cedula == "") ? "NA" : item.cedula}/${(item.telefono == "") ? "NA" : item.telefono}/"+
+        "${item.status}/${(item.nacionalidad == "") ? "NA" : item.nacionalidad}/${(item.observacion == "") ? "NA" : item.observacion}/"+
+        "${item.fReserva}/${item.edad}/"+
         "${item.precio}/${item.pagado}");
     print(url);
     http.Response response = await http.post(url);
     print(response.statusCode);
   }
-  Future<List<ReservasModel>> getAMDailyData (BuildContext context, String time)async {
-    final ventasProvider = Provider.of<VentasProvider>(context);
-    List<ReservasModel> list = [];
-
-    Uri url = Uri.parse("http://localhost:8080/getDailyData/$time/${ventasProvider.dateDaily}");
-    http.Response response = await http.get(url);
-
-    final List<dynamic> resp = jsonDecode(response.body);
-    resp.forEach((element) {
-      final ReservasModel reservas = ReservasModel.fromJson(element);
-      list.add(reservas);
-    });
-    print(list);
-    return list;
-  }
-  Future<List<ReservasModel>> getPMDailyData (BuildContext context)async {
-    final ventasProvider = Provider.of<VentasProvider>(context);
-    List<ReservasModel> list = [];
-
-    Uri url = Uri.parse("http://localhost:8080/getDailyData/${ventasProvider.dateDaily}");
-    http.Response response = await http.get(url);
-
-    final List<dynamic> resp = jsonDecode(response.body);
-    resp.forEach((element) {
-      final ReservasModel reservas = ReservasModel.fromJson(element);
-      list.add(reservas);
-    });
-    print(list);
-    return list;
-  }
-
 }

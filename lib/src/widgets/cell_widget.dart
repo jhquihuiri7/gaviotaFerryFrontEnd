@@ -11,7 +11,11 @@ class CellWidget extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       width: size.width * cellWidth,
-      child: Text(value, style: TextStyle(fontWeight: (this.type == "col") ? FontWeight.w600 : FontWeight.normal),),
+      child: Text(
+        value,
+        style: TextStyle(
+            fontWeight: (this.type == "col") ? FontWeight.w600 : FontWeight.normal),
+      ),
     );
   }
 }
