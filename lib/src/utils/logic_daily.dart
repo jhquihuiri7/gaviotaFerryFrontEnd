@@ -11,6 +11,7 @@ class LogicDaily {
   Future<List<ReservasModel>> getDailyData (BuildContext context, String time)async {
     final ventasProvider = Provider.of<VentasProvider>(context, listen: false);
     List<ReservasModel> list = [];
+    print("FECHA ${ventasProvider.dateDaily}");
     Uri url = Uri.parse("https://gaviota-ferry-backend.uc.r.appspot.com/getDailyData/$time/${ventasProvider.dateDaily}");
     http.Response response = await http.get(url);
     if (response.body.length > 5) {

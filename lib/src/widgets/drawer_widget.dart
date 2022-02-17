@@ -15,12 +15,15 @@ class DrawerWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Column(
                   children: [
-                    const ClipRRect(
+                    ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                      child: Image(
-                        image: AssetImage("assets/DSD_logo.jpg"),
-                        height: 100,
-                        width: 100,
+                      child: Container(
+                        color: Colors.white,
+                        child: const Image(
+                          image: AssetImage("assets/DSD_logo.jpg"),
+                          height: 100,
+                          width: 100,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20,),
@@ -48,6 +51,13 @@ class DrawerWidget extends StatelessWidget {
               title: const Text("Reportería"),
               onTap: (){
                 Navigator.pushReplacementNamed(context, 'reportes');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.developer_board),
+              title: const Text("Boarding Pass"),
+              onTap: (){
+                Navigator.pushReplacementNamed(context, 'ticket');
               },
             ),
             const Expanded(child: SizedBox()),

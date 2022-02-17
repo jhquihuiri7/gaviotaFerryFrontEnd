@@ -1,19 +1,10 @@
-import 'dart:html';
-import 'dart:typed_data';
 import 'package:darwin_scuba_dive/src/api/pdf_api.dart';
 import 'package:darwin_scuba_dive/src/api/pdf_parts.dart';
 import 'package:darwin_scuba_dive/src/model/reservas_model.dart';
 import 'package:darwin_scuba_dive/src/utils/logic_daily.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/services.dart';
-
-
-import 'package:pdf/pdf.dart';
-
 import 'package:pdf/widgets.dart' as pw;
-import 'package:pdf/widgets.dart';
-
 
 class PdfInvoiceApi {
   late final pw.ImageProvider logo;

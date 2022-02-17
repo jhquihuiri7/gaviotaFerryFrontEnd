@@ -1,6 +1,7 @@
 import 'package:darwin_scuba_dive/src/provider/ventas_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:io';
 
 class LogicVentas {
   Uri addUserUrl (BuildContext context){
@@ -16,6 +17,9 @@ class LogicVentas {
   }
   int getDateTimeNow(){
     DateTime dateTimeNow = DateTime.now();
+    //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? ((dateTimeNow.millisecondsSinceEpoch - (dateTimeNow.hour * 3600000) - (dateTimeNow.minute * 60000) - (dateTimeNow.second * 1000) - dateTimeNow.millisecond) * 1000) -3600000000 :
+
     return (dateTimeNow.millisecondsSinceEpoch - (dateTimeNow.hour * 3600000) - (dateTimeNow.minute * 60000) - (dateTimeNow.second * 1000) - dateTimeNow.millisecond) * 1000;
+
   }
 }

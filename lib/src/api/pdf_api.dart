@@ -1,5 +1,4 @@
 import 'package:universal_html/html.dart' as html;
-
 import 'package:pdf/widgets.dart';
 
 class PdfApi {

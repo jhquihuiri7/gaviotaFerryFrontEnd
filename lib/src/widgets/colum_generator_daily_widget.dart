@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+//import 'dart:io';
 
 class ColumnGeneratorDailyWidget extends StatefulWidget {
   const ColumnGeneratorDailyWidget({Key? key}) : super(key: key);
@@ -45,12 +46,15 @@ class _ColumnGeneratorDailyWidgetState extends State<ColumnGeneratorDailyWidget>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CellWidget(cellWidth: 0.03, value: (element.edad < 3) ? "" : "${id++}", type: "raw",),
+                      //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? Container():
                       CellWidget(cellWidth: 0.1, value: DateFormat('dd-MM-yyyy').format(DateTime.fromMicrosecondsSinceEpoch(int.parse(element.fReserva))), type: "raw",),
                       CellWidget(cellWidth: 0.2, value: element.referencia, type: "raw",),
                       CellWidget(cellWidth: 0.15, value: element.proveedor, type: "raw",),
                       CellWidget(cellWidth: 0.1, value: element.cedula, type: "raw",),
                       CellWidget(cellWidth: 0.1, value: "\$${element.precio}", type: "raw",),
+                      //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? Container():
                       CellWidget(cellWidth: 0.2, value: element.observacion, type: "raw",),
+                      //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? size.width *0.3 :
                       Container(width: size.width * 0.1,
                         child:Row(
                           children: [
@@ -93,6 +97,7 @@ class _ColumnGeneratorDailyWidgetState extends State<ColumnGeneratorDailyWidget>
                             DatePickerFunction().datePicker(context, "daily");
 
                           },
+                          //Platform.isAndroid || Platform.isMacOS || Platform.isIOS (Platform.isWindows)? int.parse(ventasProvider.dateDaily) + 86400000000 :
                           child: Text(DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(int.parse(ventasProvider.dateDaily))), style: Style().dateStyle,)
                       ),
                       SizedBox(width: 40),
@@ -118,12 +123,15 @@ class _ColumnGeneratorDailyWidgetState extends State<ColumnGeneratorDailyWidget>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CellWidget(cellWidth: 0.03, value: "Id", type: "col",),
+                        //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? Container():
                         CellWidget(cellWidth: 0.1, value: "Fecha Reserva", type: "col",),
                         CellWidget(cellWidth: 0.2, value: "Referencia", type: "col",),
                         CellWidget(cellWidth: 0.15, value: "Proveedor", type: "col",),
                         CellWidget(cellWidth: 0.1, value: "Cédula", type: "col",),
                         CellWidget(cellWidth: 0.1, value: "Precio", type: "col",),
+                        //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? Container():
                         CellWidget(cellWidth: 0.2, value: "Observacion", type: "col",),
+                        //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? 0.3 :
                         CellWidget(cellWidth: 0.1, value: "Acciones", type: "col",),
                       ],
                     ),
@@ -152,6 +160,7 @@ class _ColumnGeneratorDailyWidgetState extends State<ColumnGeneratorDailyWidget>
                             DatePickerFunction().datePicker(context, "daily");
 
                           },
+                          //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS)? int.parse(ventasProvider.dateDaily) + 86400000000 :
                           child: Text(DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(int.parse(ventasProvider.dateDaily))), style: Style().dateStyle,)
                       ),
                       SizedBox(width: 40),
@@ -177,12 +186,15 @@ class _ColumnGeneratorDailyWidgetState extends State<ColumnGeneratorDailyWidget>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CellWidget(cellWidth: 0.03, value: "Id", type: "col",),
+                        //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? Container():
                         CellWidget(cellWidth: 0.1, value: "Fecha Reserva", type: "col",),
                         CellWidget(cellWidth: 0.2, value: "Referencia", type: "col",),
                         CellWidget(cellWidth: 0.15, value: "Proveedor", type: "col",),
                         CellWidget(cellWidth: 0.1, value: "Cédula", type: "col",),
                         CellWidget(cellWidth: 0.1, value: "Precio", type: "col",),
+                        //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? Container():
                         CellWidget(cellWidth: 0.2, value: "Observacion", type: "col",),
+                        //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? 0.3 :
                         CellWidget(cellWidth: 0.1, value: "Acciones", type: "col",),
                       ],
                     ),
