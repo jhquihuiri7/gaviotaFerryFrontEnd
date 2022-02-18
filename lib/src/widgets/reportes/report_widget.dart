@@ -61,7 +61,7 @@ class ReportWidget extends StatelessWidget {
       widgetCobros.add(detalleCobroHeader);
       element.detallePasajero.forEach((detalle) {
         Widget detalleCobro = Dismissible(
-          key: Key(detalle.referencia),
+          key: Key(detalle.referencia+detalle.ruta),
           child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

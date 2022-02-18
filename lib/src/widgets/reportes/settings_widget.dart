@@ -20,42 +20,63 @@ class _SettingsWidgetState extends State<SettingsWidget> {
   ReporteModel report = ReporteModel(ventas: 0, facturado: 0, recuperado: 0, recuperar: 0, detalle: []);
 
   bool loadingReport = false;
+  final _formKey = GlobalKey<FormState>();
+  String proveedor = "";
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Column(
       children: [
-        Row(
-          children: [
-            SizedBox(width: 40),
-            const Text("Reportes Ventas", style: TextStyle(fontSize: 30),),
-            SizedBox(width: 40),
-            ElevatedButton(
-                style: Style().datesStyle,
-                onPressed: ()async {
-                  List<int> rangePicker = await RangePickerFunction().rangePicker(context);
-                  initialDate = rangePicker[0];
-                  endDate = rangePicker[1];
-                  setState(() {
-                  });
-                },
-                child: Text("${DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(initialDate))} - ${DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(endDate))}", style: Style().dateStyle,)
-            ),
-            SizedBox(width: 40),
-            ElevatedButton(
-                style: Style().datesStyle,
-                onPressed: ()async {
-                  loadingReport = true;
-                  setState(() {});
-                  report = await LogicReport().getReport(context, initialDate, endDate);
-                  loadingReport = false;
-                  setState(() {});
-
-                },
-                child: Text("Generar Reporte", style: Style().dateStyle,)
-            )
-          ],
+        Form(
+          key: _formKey,
+          child: Row(
+            children: [
+              SizedBox(width: 40),
+              const Text("Reportes Ventas", style: TextStyle(fontSize: 30),),
+              SizedBox(width: 40),
+              ElevatedButton(
+                  style: Style().datesStyle,
+                  onPressed: ()async {
+                    List<int> rangePicker = await RangePickerFunction().rangePicker(context);
+                    initialDate = rangePicker[0];
+                    endDate = rangePicker[1];
+                    setState(() {
+                    });
+                  },
+                  child: Text("${DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(initialDate))} - ${DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(endDate))}", style: Style().dateStyle,)
+              ),
+              SizedBox(width: 40),
+              Container(
+                child: TextFormField(
+                  onSaved: (value){
+                    if (value == null || value == ""){
+                      proveedor = "NA";
+                    }else {
+                      proveedor = value;
+                    } 
+                    print(proveedor);
+                  },
+                ), 
+                width: 200,
+              ),
+              SizedBox(width: 40),
+              ElevatedButton(
+                  style: Style().datesStyle,
+                  onPressed: ()async {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();  
+                    }
+                    loadingReport = true;
+                    setState(() {});
+                    report = await LogicReport().getReport(context, initialDate, endDate, proveedor);
+                    loadingReport = false;
+                    setState(() {});
+                  },
+                  child: Text("Generar Reporte", style: Style().dateStyle,)
+              )
+            ],
+          ) 
         ),
         (loadingReport)
             ? Container(child: CircularProgressIndicator(),margin: EdgeInsets.only(top: size.height * 0.4),)

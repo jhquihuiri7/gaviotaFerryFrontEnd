@@ -9,8 +9,10 @@ import 'package:provider/provider.dart';
 
 import 'export_widgets.dart';
 class LogicReport {
-  Future<ReporteModel> getReport (BuildContext context, int begin, int end)async {
-    Uri url = Uri.parse("https://gaviota-ferry-backend.uc.r.appspot.com/report/$begin/$end");
+  Future<ReporteModel> getReport (BuildContext context, int begin, int end, String proveedor)async {
+    //Uri url = Uri.parse("https://gaviota-ferry-backend.uc.r.appspot.com/report/$begin/$end/$proveedor");
+    Uri url = Uri.parse("http://localhost:8080/report/$begin/$end/$proveedor");
+    print(url);
     http.Response response = await http.post(url);
     ReporteModel reporte;
     if (response.body.length > 5) {
