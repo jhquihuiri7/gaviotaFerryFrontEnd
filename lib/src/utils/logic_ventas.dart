@@ -1,9 +1,19 @@
+import 'dart:convert';
+
+import 'package:darwin_scuba_dive/src/model/autocomplete_model.dart';
 import 'package:darwin_scuba_dive/src/provider/ventas_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 import 'dart:io';
 
 class LogicVentas {
+  Future<List<AutocompleteUser>> GetAutocompleteUser () async{
+    Uri url = Uri.parse("http://localhost:8080/autocompleteUser");
+    http.Response response = await http.get(url);
+    return autocompleteUserFromJson(response.body);
+  }
+  
   Uri addUserUrl (BuildContext context){
     final ventasProvider = Provider.of<VentasProvider>(context, listen: false);
     return Uri.parse(

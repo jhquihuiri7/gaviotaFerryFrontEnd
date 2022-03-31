@@ -11,6 +11,7 @@ class DropDownWidget extends StatefulWidget {
 
 class _DropDownWidgetState extends State<DropDownWidget> {
   String dropdownValue = "";
+  String dropdownValueStatus = "Transeunte";
   bool dropdownValueChange = false;
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,17 @@ class _DropDownWidgetState extends State<DropDownWidget> {
         return "Permanente";
       }
     }
+    String _selectStatus (){
+      if (ventasProvider.autocompleteUser.referencia == ""){
+        dropdownValueStatus = "Transeunte";
+      }else {
+        dropdownValueStatus = ventasProvider.autocompleteUser.status;
+        setState(() {
+
+        });
+      }
+      return dropdownValueStatus;
+    }
     List<String> _selectValueOptions(){
       if (widget.option == "ruta"){
         return <String>["SC-SX", 'SX-SC'];
@@ -44,7 +56,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
       return dropdownValue;
     }
     return DropdownButton<String>(
-      value: value(),
+      value: (widget.option == "status") ?  _selectStatus() :value(),
       icon: const Icon(Icons.arrow_downward),
       elevation: 16,
       style: Style().dateStyle,
@@ -55,13 +67,15 @@ class _DropDownWidgetState extends State<DropDownWidget> {
       onChanged: (String? newValue) {
         dropdownValueChange = true;
         setState(() {
-          dropdownValue = newValue!;
           if (widget.option == "ruta"){
+            dropdownValue = newValue!;
             ventasProvider.reservasModel.ruta = newValue;
           } else if (widget.option == "precio"){
+            dropdownValue = newValue!;
             ventasProvider.reservasModel.precio = int.parse(newValue);
           }else {
-            ventasProvider.reservasModel.status = newValue;
+            dropdownValueStatus = newValue!;
+            ventasProvider.reservasModel.status = dropdownValueStatus;
           }
         });
       },

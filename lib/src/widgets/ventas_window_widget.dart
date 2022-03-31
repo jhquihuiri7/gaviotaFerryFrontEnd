@@ -1,6 +1,6 @@
+import 'package:darwin_scuba_dive/src/model/autocomplete_model.dart';
 import 'package:darwin_scuba_dive/src/provider/utils_provider.dart';
 import 'package:darwin_scuba_dive/src/utils/export_widgets.dart';
-import 'package:darwin_scuba_dive/src/utils/logic_daily.dart';
 import 'package:darwin_scuba_dive/src/utils/logic_ventas.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,17 +8,25 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
 class VentasWindowWidget extends StatefulWidget {
-  const VentasWindowWidget({Key? key}) : super(key: key);
+  final List<AutocompleteUser> users;
+  const VentasWindowWidget({required this.users});
 
   @override
   State<VentasWindowWidget> createState() => _VentasWindowWidgetState();
 }
 class _VentasWindowWidgetState extends State<VentasWindowWidget> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController _controllerCedula = TextEditingController();
+  TextEditingController _controllerProveedor = TextEditingController();
+  TextEditingController _controllerEdad = TextEditingController();
+  TextEditingController _controllerNacionalidad = TextEditingController();
+  TextEditingController _controllerObservaciones = TextEditingController();
+  TextEditingController _controllerTelefono = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final ventasProvider = Provider.of<VentasProvider>(context);
     final utilsProvider = Provider.of<UtilsProvider>(context);
+    print(widget.users);
     return Card(
       child: Container(
         padding: const EdgeInsets.all(20),
@@ -48,21 +56,107 @@ class _VentasWindowWidgetState extends State<VentasWindowWidget> {
               const SizedBox(height: 20),
               Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  TextFormFieldWidget(width: 300, text: "Referencia",),
+                children: [
+                  //child: TextFormFieldWidget(width: 300, text: "Referencia",)
+                  Autocomplete<AutocompleteUser>(
+                   optionsBuilder: (TextEditingValue textEditingValue) {
+                     return widget.users.where((AutocompleteUser user) =>
+                         user.referencia.toLowerCase()
+                             .startsWith(textEditingValue.text.toLowerCase())).toList();
+                     },
+                   displayStringForOption: (AutocompleteUser option) => option.referencia,
+                    fieldViewBuilder: (
+                        BuildContext context,
+                        TextEditingController fieldTextEditingController,
+                        FocusNode fieldFocusNode,
+                        VoidCallback onFieldSubmitted
+                        ) {
+                      return Container(
+                        width: 300,
+                        height: 35,
+                        child: TextFormField(
+                          decoration: const InputDecoration(
+                            label: Text("Referencia"),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                            ),
+                          ),
+                          controller: fieldTextEditingController,
+                          focusNode: fieldFocusNode,
+                          onSaved: (value){
+                            ventasProvider.reservasModel.referencia = value!;
+                            fieldTextEditingController.text = "";
+                          },
+                        ),
+                      );
+                    },
+                    onSelected: (AutocompleteUser selection) {
+                      print('Selected: ${selection.referencia}');
+                      _controllerCedula.value = _controllerCedula.value.copyWith(text: selection.cedula);
+                      _controllerEdad.value = _controllerEdad.value.copyWith(text: "${(DateTime.now().year - selection.register)+ selection.edad}");
+                      _controllerProveedor.value = _controllerProveedor.value.copyWith(text: "");
+                      _controllerNacionalidad.value = _controllerNacionalidad.value.copyWith(text: selection.nacionalidad);
+                      _controllerObservaciones.value = _controllerObservaciones.value.copyWith(text: "");
+                      _controllerTelefono.value = _controllerTelefono.value.copyWith(text: "");
+                      final AutocompleteUser user = AutocompleteUser(
+                        referencia: selection.referencia,
+                        cedula: selection.cedula,
+                        status: selection.status,
+                        edad: selection.edad,
+                        nacionalidad: selection.nacionalidad,
+                        register: selection.register,
+                      );
+                      ventasProvider.autocompleteUser =  user;
+
+                      setState(() {
+                      });
+                    },
+                    optionsViewBuilder: (
+                        BuildContext context,
+                        AutocompleteOnSelected<AutocompleteUser> onSelected,
+                        Iterable<AutocompleteUser> options){
+                      return Align(
+                        alignment: Alignment.centerLeft,
+
+                          child: Material(
+                            child: Container(
+                               width: 300,
+                               color: Colors.grey.withOpacity(0.8),
+                               child: ListView.builder(
+                                  padding: EdgeInsets.all(10.0),
+                                  itemCount: options.length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    final AutocompleteUser option = options.elementAt(index);
+                                    return GestureDetector(
+                                        onTap: () {
+                                          onSelected(option);
+                                        },
+                                        child: ListTile(
+                                          title: Text(option.referencia,
+                                            style: const TextStyle(color: Colors.white)),
+                                        ),
+                                    )   ;
+                                  }
+                              ),
+                            ),
+                          ),
+                      );
+                    },
+
+                  ),
                   SizedBox(width: 40),
-                  TextFormFieldWidget(width: 150, text: "D. Identidad"),
+                  TextFormFieldWidget(width: 150, text: "D. Identidad", controller: _controllerCedula,),
                   SizedBox(width: 40),
-                  TextFormFieldWidget(width: 150, text: "Teléfono"),
+                  TextFormFieldWidget(width: 150, text: "Teléfono", controller: _controllerTelefono,),
                 ],
               ),
               const SizedBox(height: 10),
               Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const[
-                  TextFormFieldWidget(width: 300, text: "Proveedor"),
+                children: [
+                  TextFormFieldWidget(width: 300, text: "Proveedor", controller: _controllerProveedor,),
                   SizedBox(width: 40),
-                  TextFormFieldWidget(width: 150, text: "Edad"),
+                  TextFormFieldWidget(width: 150, text: "Edad", controller: _controllerEdad,),
                   SizedBox(width: 40),
                   DropDownWidget(option: "precio",),
                 ],
@@ -70,12 +164,12 @@ class _VentasWindowWidgetState extends State<VentasWindowWidget> {
               const SizedBox(height: 10),
               Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  TextFormFieldWidget(width: 150, text: "Nacionalidad"),
+                children: [
+                  TextFormFieldWidget(width: 150, text: "Nacionalidad", controller: _controllerNacionalidad,),
                   SizedBox(width: 40),
                   DropDownWidget(option: "status",),
                   SizedBox(width: 40),
-                  TextFormFieldWidget(width: 380, text: "Observaciones"),
+                  TextFormFieldWidget(width: 380, text: "Observaciones", controller: _controllerObservaciones,),
                 ],
               ),
               const SizedBox(height: 10),
@@ -88,6 +182,7 @@ class _VentasWindowWidgetState extends State<VentasWindowWidget> {
                           utilsProvider.addUserButton = false;
                           _formKey.currentState!.save();
                           Uri url = LogicVentas().addUserUrl(context);
+                          print(url);
                           http.Response response = await http.post(url);
                           ventasProvider.dateVenta = DateTime.now();
                           ventasProvider.reservasModel.fViaje = LogicVentas().getDateTimeNow().toString();

@@ -1,3 +1,4 @@
+import 'package:darwin_scuba_dive/src/model/autocomplete_model.dart';
 import 'package:darwin_scuba_dive/src/model/reservas_model.dart';
 import 'package:darwin_scuba_dive/src/utils/logic_ventas.dart';
 import 'package:flutter/material.dart';
@@ -61,5 +62,20 @@ class VentasProvider extends ChangeNotifier {
   set reservasModel(ReservasModel value) {
     _reservasModel = value;
   }
+  AutocompleteUser _autocompleteUser = AutocompleteUser(
+      cedula: '',
+      edad: 0,
+      nacionalidad: '',
+      referencia: '',
+      status: '',
+      register: 0,
+  );
+  AutocompleteUser get autocompleteUser => _autocompleteUser;
+  set autocompleteUser(AutocompleteUser value) {
+    _autocompleteUser = value;
+    print('autocompleteUser: ${_autocompleteUser.cedula}');
+    notifyListeners();
+  }
+
 }
 

@@ -4,21 +4,28 @@ import 'package:provider/provider.dart';
 class TextFormFieldWidget extends StatefulWidget {
   final double width;
   final String text;
+  final TextEditingController controller;
 
-  const TextFormFieldWidget({required this.width, required this.text});
+  const TextFormFieldWidget({required this.width, required this.text, required this.controller});
 
   @override
   State<TextFormFieldWidget> createState() => _TextFormFieldWidgetState();
 }
 
 class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
-  final controller = TextEditingController();
+  //final controller = TextEditingController();
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
   @override
   void dispose() {
     // Clean up the controller when the widget is removed from the
     // widget tree.
-    controller.dispose();
+    widget.controller.dispose();
     super.dispose();
   }
 
@@ -27,19 +34,20 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
     final ventasProvider = Provider.of<VentasProvider>(context);
     return SizedBox(
         child: TextFormField(
-          controller: controller,
+          controller: widget.controller,
+          //initialValue: (ventasProvider.autocompleteUser.referencia == "") ? "" : ventasProvider.autocompleteUser.referencia,
           onChanged: (value){
-            int? age = int.tryParse(controller.text);
-            ventasProvider.edad = (controller.text == null) ? "" : (controller.text == "") ? "" : controller.text;
-            if (age != null) {
-              if (age < 3) {
-                ventasProvider.initialValue = 0;
-              }else if (age > 11 && age < 65) {
-                ventasProvider.initialValue = 25;
-              }else {
-                ventasProvider.initialValue = 15;
-              }
-            }
+           //int? age = int.tryParse(controller.text);
+           //ventasProvider.edad = (controller.text == null) ? "" : (controller.text == "") ? "" : controller.text;
+           //if (age != null) {
+           //  if (age < 3) {
+           //    ventasProvider.initialValue = 0;
+           //  }else if (age > 11 && age < 65) {
+           //    ventasProvider.initialValue = 25;
+           //  }else {
+           //    ventasProvider.initialValue = 15;
+           //  }
+           //}
           },
           onSaved: (value){
             print(value);
@@ -59,7 +67,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
             }else if (widget.text == "Observaciones"){
               ventasProvider.reservasModel.observacion = (value == null) ? "NA" : (value == "") ? "NA" : value;
             }
-            controller.text = "";
+            widget.controller.text = "";
           },
           decoration: InputDecoration(
             label: Text(widget.text),

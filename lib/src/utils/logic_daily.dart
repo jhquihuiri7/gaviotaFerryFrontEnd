@@ -13,6 +13,7 @@ class LogicDaily {
     List<ReservasModel> list = [];
     print("FECHA ${ventasProvider.dateDaily}");
     Uri url = Uri.parse("https://gaviota-ferry-backend.uc.r.appspot.com/getDailyData/$time/${ventasProvider.dateDaily}");
+    //Uri url = Uri.parse("http://localhost:8080/getDailyData/$time/${ventasProvider.dateDaily}");
     http.Response response = await http.get(url);
     if (response.body.length > 5) {
       final List<dynamic> resp = jsonDecode(response.body);
