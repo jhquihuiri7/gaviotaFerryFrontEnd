@@ -87,6 +87,11 @@ class _VentasWindowWidgetState extends State<VentasWindowWidget> {
                             ventasProvider.reservasModel.referencia = value!;
                             fieldTextEditingController.text = "";
                           },
+                          onChanged: (value){
+                            if (value.length < 5){
+                              ventasProvider.autocompleteUser.status = "";
+                            }
+                          },
                         ),
                       );
                     },

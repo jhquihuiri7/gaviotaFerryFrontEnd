@@ -9,7 +9,7 @@ import 'dart:io';
 
 class LogicVentas {
   Future<List<AutocompleteUser>> GetAutocompleteUser () async{
-    Uri url = Uri.parse("http://localhost:8080/autocompleteUser");
+    Uri url = Uri.parse("https://gaviota-ferry-backend.uc.r.appspot.com/autocompleteUser");
     http.Response response = await http.get(url);
     return autocompleteUserFromJson(response.body);
   }

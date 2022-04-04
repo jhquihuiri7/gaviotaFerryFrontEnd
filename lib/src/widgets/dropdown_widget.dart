@@ -31,9 +31,11 @@ class _DropDownWidgetState extends State<DropDownWidget> {
     }
     String _selectStatus (){
       if (ventasProvider.autocompleteUser.referencia == ""){
-        dropdownValueStatus = "Transeunte";
+        dropdownValueStatus = "Permanente";
       }else {
-        dropdownValueStatus = ventasProvider.autocompleteUser.status;
+        if (ventasProvider.autocompleteUser.status != ""){
+          dropdownValueStatus = ventasProvider.autocompleteUser.status;
+        }
         setState(() {
 
         });
