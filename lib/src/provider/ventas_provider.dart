@@ -4,7 +4,7 @@ import 'package:darwin_scuba_dive/src/utils/logic_ventas.dart';
 import 'package:flutter/material.dart';
 
 class VentasProvider extends ChangeNotifier {
-  DateTime _dateVenta = DateTime.now();
+  DateTime _dateVenta = DateTime.parse("${DateTime.now().year}${(DateTime.now().month< 10)?0:""}${DateTime.now().month}${(DateTime.now().day< 10)?0:""}${DateTime.now().day}");
 
   DateTime get dateVenta => _dateVenta;
   set dateVenta(DateTime value) {
@@ -73,7 +73,6 @@ class VentasProvider extends ChangeNotifier {
   AutocompleteUser get autocompleteUser => _autocompleteUser;
   set autocompleteUser(AutocompleteUser value) {
     _autocompleteUser = value;
-    print('autocompleteUser: ${_autocompleteUser.cedula}');
     notifyListeners();
   }
 

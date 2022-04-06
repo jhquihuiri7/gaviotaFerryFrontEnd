@@ -20,10 +20,18 @@ class _ColumnGeneratorDailyWidgetState extends State<ColumnGeneratorDailyWidget>
   @override
   String time = "Todo";
   String timeBefore = "Todo";
+  String standarizeDate (String date){
+    DateTime dateTimeNow = DateTime.parse("${DateTime.now().year}${(DateTime.now().month< 10)?0:""}${DateTime.now().month}${(DateTime.now().day< 10)?0:""}${DateTime.now().day}");
+    if (dateTimeNow.microsecondsSinceEpoch % 86400000000 / 86400000000 == 0.25){
+      return (int.parse(date) + 3600000000).toString();
+    }else {
+      return date;
+    }
+  }
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final ventasProvider = Provider.of<VentasProvider>(context);
-    print("DE NUEVO");
+    
     return FutureBuilder(
         future: LogicDaily().getDailyData(context, time),
         builder: (BuildContext c,AsyncSnapshot<List<ReservasModel>> s){
@@ -98,7 +106,7 @@ class _ColumnGeneratorDailyWidgetState extends State<ColumnGeneratorDailyWidget>
 
                           },
                           //Platform.isAndroid || Platform.isMacOS || Platform.isIOS (Platform.isWindows)? int.parse(ventasProvider.dateDaily) + 86400000000 :
-                          child: Text(DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(int.parse(ventasProvider.dateDaily))), style: Style().dateStyle,)
+                          child: Text(DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(int.parse(standarizeDate(ventasProvider.dateDaily)))), style: Style().dateStyle,)
                       ),
                       SizedBox(width: 40),
                       DropdownButton(
@@ -161,7 +169,7 @@ class _ColumnGeneratorDailyWidgetState extends State<ColumnGeneratorDailyWidget>
 
                           },
                           //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS)? int.parse(ventasProvider.dateDaily) + 86400000000 :
-                          child: Text(DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(int.parse(ventasProvider.dateDaily))), style: Style().dateStyle,)
+                          child: Text(DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(int.parse(standarizeDate(ventasProvider.dateDaily)))), style: Style().dateStyle,)
                       ),
                       SizedBox(width: 40),
                       DropdownButton(

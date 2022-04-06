@@ -9,6 +9,7 @@ import 'dart:io';
 
 class LogicVentas {
   Future<List<AutocompleteUser>> GetAutocompleteUser () async{
+
     Uri url = Uri.parse("https://gaviota-ferry-backend.uc.r.appspot.com/autocompleteUser");
     http.Response response = await http.get(url);
     return autocompleteUserFromJson(response.body);
@@ -26,10 +27,13 @@ class LogicVentas {
             "${ventasProvider.reservasModel.precio}/${ventasProvider.reservasModel.pagado}");
   }
   int getDateTimeNow(){
-    DateTime dateTimeNow = DateTime.now();
-    //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? ((dateTimeNow.millisecondsSinceEpoch - (dateTimeNow.hour * 3600000) - (dateTimeNow.minute * 60000) - (dateTimeNow.second * 1000) - dateTimeNow.millisecond) * 1000) -3600000000 :
 
-    return (dateTimeNow.millisecondsSinceEpoch - (dateTimeNow.hour * 3600000) - (dateTimeNow.minute * 60000) - (dateTimeNow.second * 1000) - dateTimeNow.millisecond) * 1000;
-
+    DateTime dateTimeNow = DateTime.parse("${DateTime.now().year}${(DateTime.now().month< 10)?0:""}${DateTime.now().month}${(DateTime.now().day< 10)?0:""}${DateTime.now().day}");
+       //return (dateTimeNow.millisecondsSinceEpoch - (dateTimeNow.hour * 3600000) - (dateTimeNow.minute * 60000) - (dateTimeNow.second * 1000) - dateTimeNow.millisecond) * 1000;
+    if (dateTimeNow.microsecondsSinceEpoch % 86400000000 / 86400000000 == 0.25){
+      return dateTimeNow.microsecondsSinceEpoch - 3600000000;
+    }else {
+      return dateTimeNow.microsecondsSinceEpoch;
+    }
   }
 }

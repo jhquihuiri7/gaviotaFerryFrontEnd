@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 class RangePickerFunction {
   Future<List<int>> rangePicker (BuildContext context) async{
-     final dateProvider = Provider.of<VentasProvider>(context, listen: false);
+    DateTime dateTimeNow = DateTime.parse("${DateTime.now().year}${(DateTime.now().month< 10)?0:""}${DateTime.now().month}${(DateTime.now().day< 10)?0:""}${DateTime.now().day}");
      final picked = await showDateRangePicker(
          context: context,
          firstDate: DateTime(2021),
@@ -23,7 +23,14 @@ class RangePickerFunction {
          }
      );
      if (picked != null) {
-       return [picked.start.microsecondsSinceEpoch, picked.end.microsecondsSinceEpoch];
+
+       if (dateTimeNow.microsecondsSinceEpoch % 86400000000 / 86400000000 == 0.25){
+         return [picked.start.microsecondsSinceEpoch - 3600000000, picked.end.microsecondsSinceEpoch - 3600000000];
+
+       }else {
+         return [picked.start.microsecondsSinceEpoch, picked.end.microsecondsSinceEpoch];
+       }
+
      }else{
        return [LogicVentas().getDateTimeNow(), LogicVentas().getDateTimeNow()];
      }

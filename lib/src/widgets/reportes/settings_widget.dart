@@ -22,7 +22,14 @@ class _SettingsWidgetState extends State<SettingsWidget> {
   bool loadingReport = false;
   final _formKey = GlobalKey<FormState>();
   String proveedor = "";
-
+  String standarizeDate (String date){
+    DateTime dateTimeNow = DateTime.parse("${DateTime.now().year}${(DateTime.now().month< 10)?0:""}${DateTime.now().month}${(DateTime.now().day< 10)?0:""}${DateTime.now().day}");
+    if (dateTimeNow.microsecondsSinceEpoch % 86400000000 / 86400000000 == 0.25){
+      return (int.parse(date) + 3600000000).toString();
+    }else {
+      return date;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -44,7 +51,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                     setState(() {
                     });
                   },
-                  child: Text("${DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(initialDate))} - ${DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(endDate))}", style: Style().dateStyle,)
+                  child: Text("${DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(int.parse(standarizeDate(initialDate.toString()))))} - ${DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(int.parse(standarizeDate(endDate.toString()))))}", style: Style().dateStyle,)
               ),
               SizedBox(width: 40),
               Container(
@@ -54,8 +61,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                       proveedor = "NA";
                     }else {
                       proveedor = value;
-                    } 
-                    print(proveedor);
+                    }
                   },
                 ), 
                 width: 200,

@@ -7,9 +7,10 @@ import 'dart:io';
 class DatePickerFunction {
   datePicker (BuildContext context, String type) async{
      final dateProvider = Provider.of<VentasProvider>(context, listen: false);
+     DateTime dateTimeNow = DateTime.parse("${DateTime.now().year}${(DateTime.now().month< 10)?0:""}${DateTime.now().month}${(DateTime.now().day< 10)?0:""}${DateTime.now().day}");
      final DateTime? picked = await showDatePicker(
          context: context,
-         initialDate: DateTime.now(),
+         initialDate: DateTime.parse("${DateTime.now().year}${(DateTime.now().month< 10)?0:""}${DateTime.now().month}${(DateTime.now().day< 10)?0:""}${DateTime.now().day}"),
          firstDate: DateTime(2021),
          lastDate: DateTime(2023),
          builder: (BuildContext context, Widget? child){
@@ -30,14 +31,23 @@ class DatePickerFunction {
          //(Platform.isMacOS)
          //              ? (picked.microsecondsSinceEpoch-3600000000).toString()
          //              :
-         dateProvider.reservasModel.fViaje = picked.microsecondsSinceEpoch.toString();
+
+         if (dateTimeNow.microsecondsSinceEpoch % 86400000000 / 86400000000 == 0.25){
+           dateProvider.reservasModel.fViaje = (picked.microsecondsSinceEpoch - 3600000000).toString();
+         }else {
+           dateProvider.reservasModel.fViaje = picked.microsecondsSinceEpoch.toString();
+         }
        }
      }else if (type == "daily"){
        if (picked != null) {
          //(Platform.isMacOS)
          //              ? (picked.microsecondsSinceEpoch-3600000000).toString()
          //              :
-         dateProvider.dateDaily = picked.microsecondsSinceEpoch.toString();
+         if (dateTimeNow.microsecondsSinceEpoch % 86400000000 / 86400000000 == 0.25){
+           dateProvider.dateDaily = (picked.microsecondsSinceEpoch - 3600000000).toString();
+         }else {
+           dateProvider.dateDaily = picked.microsecondsSinceEpoch.toString();
+         }
        }
      }
   }

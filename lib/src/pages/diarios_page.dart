@@ -12,7 +12,6 @@ class DiariosPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final ventasProvider = Provider.of<VentasProvider>(context);
     print(ventasProvider.dateDaily);
-    Widget _phone = Container();
     Widget _web = FabCircularMenu(
         fabOpenIcon: const Icon(Icons.print, color: Colors.white,),
         fabCloseIcon: const Icon(Icons.close, color: Colors.white),

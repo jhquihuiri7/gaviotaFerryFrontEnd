@@ -53,13 +53,13 @@ class DrawerWidget extends StatelessWidget {
                 Navigator.pushReplacementNamed(context, 'reportes');
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.developer_board),
-              title: const Text("Boarding Pass"),
-              onTap: (){
-                Navigator.pushReplacementNamed(context, 'ticket');
-              },
-            ),
+            //ListTile(
+            //  leading: const Icon(Icons.developer_board),
+            //  title: const Text("Boarding Pass"),
+            //  onTap: (){
+            //    Navigator.pushReplacementNamed(context, 'ticket');
+            //  },
+            //),
             const Expanded(child: SizedBox()),
             ListTile(
               leading: const Icon(Icons.logout),
