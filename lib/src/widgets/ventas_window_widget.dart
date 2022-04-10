@@ -1,9 +1,4 @@
-import 'package:darwin_scuba_dive/src/model/autocomplete_model.dart';
-import 'package:darwin_scuba_dive/src/provider/utils_provider.dart';
 import 'package:darwin_scuba_dive/src/utils/export_widgets.dart';
-import 'package:darwin_scuba_dive/src/utils/logic_ventas.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,7 +21,7 @@ class _VentasWindowWidgetState extends State<VentasWindowWidget> {
   Widget build(BuildContext context) {
     final ventasProvider = Provider.of<VentasProvider>(context);
     final utilsProvider = Provider.of<UtilsProvider>(context);
-    print(widget.users);
+
     return Card(
       child: Container(
         padding: const EdgeInsets.all(20),
@@ -96,7 +91,6 @@ class _VentasWindowWidgetState extends State<VentasWindowWidget> {
                       );
                     },
                     onSelected: (AutocompleteUser selection) {
-                      print('Selected: ${selection.referencia}');
                       _controllerCedula.value = _controllerCedula.value.copyWith(text: selection.cedula);
                       _controllerEdad.value = _controllerEdad.value.copyWith(text: "${(DateTime.now().year - selection.register)+ selection.edad}");
                       _controllerProveedor.value = _controllerProveedor.value.copyWith(text: "");
@@ -187,7 +181,6 @@ class _VentasWindowWidgetState extends State<VentasWindowWidget> {
                           utilsProvider.addUserButton = false;
                           _formKey.currentState!.save();
                           Uri url = LogicVentas().addUserUrl(context);
-                          print(url);
                           http.Response response = await http.post(url);
                           ventasProvider.dateVenta = DateTime.now();
                           ventasProvider.reservasModel.fViaje = LogicVentas().getDateTimeNow().toString();

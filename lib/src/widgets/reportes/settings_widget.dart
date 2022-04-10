@@ -22,14 +22,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
   bool loadingReport = false;
   final _formKey = GlobalKey<FormState>();
   String proveedor = "";
-  String standarizeDate (String date){
-    DateTime dateTimeNow = DateTime.parse("${DateTime.now().year}${(DateTime.now().month< 10)?0:""}${DateTime.now().month}${(DateTime.now().day< 10)?0:""}${DateTime.now().day}");
-    if (dateTimeNow.microsecondsSinceEpoch % 86400000000 / 86400000000 == 0.25){
-      return (int.parse(date) + 3600000000).toString();
-    }else {
-      return date;
-    }
-  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -51,7 +44,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                     setState(() {
                     });
                   },
-                  child: Text("${DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(int.parse(standarizeDate(initialDate.toString()))))} - ${DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(int.parse(standarizeDate(endDate.toString()))))}", style: Style().dateStyle,)
+                  child: Text("${DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(StandarizeDate().standarizeDate(initialDate)))} - ${DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(StandarizeDate().standarizeDate(endDate)))}", style: Style().dateStyle,)
               ),
               SizedBox(width: 40),
               Container(
@@ -75,7 +68,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                     }
                     loadingReport = true;
                     setState(() {});
-                    report = await LogicReport().getReport(context, initialDate, endDate, proveedor);
+                    report = await LogicReport().getReport(context, StandarizeDate().standarizeDate(initialDate), StandarizeDate().standarizeDate(endDate), proveedor);
                     loadingReport = false;
                     setState(() {});
                   },
@@ -86,7 +79,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
         ),
         (loadingReport)
             ? Container(child: CircularProgressIndicator(),margin: EdgeInsets.only(top: size.height * 0.4),)
-            : SingleChildScrollView(child: ReportWidget(reportModel: report),),
+            : SingleChildScrollView(child: ReportWidget(reportModel: report, initialDate: initialDate, endDate: endDate),),
       ],
     );
   }

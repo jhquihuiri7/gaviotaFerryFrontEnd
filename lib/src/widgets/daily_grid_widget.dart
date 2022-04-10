@@ -1,5 +1,5 @@
 import 'package:darwin_scuba_dive/src/widgets/colum_generator_daily_widget.dart';
-import 'package:flutter/material.dart';
+import 'package:darwin_scuba_dive/src/utils/export_widgets.dart';
 class DailyGridWidget extends StatefulWidget {
   const DailyGridWidget({Key? key}) : super(key: key);
 
@@ -12,9 +12,8 @@ class _DailyGridWidgetState extends State<DailyGridWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
-
-        const SingleChildScrollView(
+      children: const [
+        SingleChildScrollView(
           child: ColumnGeneratorDailyWidget(),
         ),
       ],

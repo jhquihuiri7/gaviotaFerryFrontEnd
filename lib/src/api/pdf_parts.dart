@@ -2,7 +2,7 @@ import 'package:darwin_scuba_dive/src/model/reservas_model.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 class PDFParts {
-  pw.Widget buildTable (pw.Context context, String type, String date, List<ReservasModel> items){
+  pw.Widget buildTable (pw.Context context, String type, String date, List<ReservasModel> items,String typeTable, String title1, String title2, String title3){
     const _borderStyle = pw.BorderSide(width: 0.5);
     int _id = 1;
     final List<List<String>> data = (items.isEmpty) ? [] : items.map((item) => [
@@ -12,7 +12,7 @@ class PDFParts {
       item.cedula,
       item.edad.toString(),
       item.status,
-      item.observacion,
+      (typeTable == "Report") ? (item.pagado == true) ? "Ok" : "Pendiente" : item.observacion,
     ]).toList();
     for (var i  = _id; i <= 38; i++){
       data.add(["$i","","","","","",""]);
@@ -21,28 +21,28 @@ class PDFParts {
         children: [
           pw.Table.fromTextArray(
             border: const pw.TableBorder(left: _borderStyle, right:_borderStyle ,top: _borderStyle,bottom:_borderStyle,),
-            headers: ["COE PROVINCIAL DE GALAPAGOS"],
+            headers: [title1],
             headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 13),
             cellPadding: pw.EdgeInsets.symmetric(vertical: 1),
             data: [[],[]],
           ),
           pw.Table.fromTextArray(
             border: const pw.TableBorder(left: _borderStyle, right:_borderStyle ,top: _borderStyle,bottom:_borderStyle,),
-            headers: ["FORMATO DE CONTROL DE PASAJEROS AEREO Y MARITIMO"],
+            headers: [title2],
             headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 8),
             cellPadding: pw.EdgeInsets.symmetric(vertical: 1),
             data: [[],[]],
           ),
           pw.Table.fromTextArray(
             border: const pw.TableBorder(left: _borderStyle, right:_borderStyle ,top: _borderStyle,bottom:_borderStyle,),
-            headers: ["NOMBRE DEL TRANSPORTE: LANCHA GAVIOTA"],
+            headers: [title3],
             headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 6),
             cellPadding: pw.EdgeInsets.symmetric(vertical: 1),
             data: [[],[]],
           ),
           pw.Table.fromTextArray(
             border: const pw.TableBorder(left: _borderStyle, right:_borderStyle ,top: _borderStyle,bottom:_borderStyle,),
-            headers: ["RUTA: SAN CRISTOBAL - SANTA CRUZ","FECHA: $date","HORA DE SALIDA: ${((type == "AM") ? "07:00" : "15:00")}"],
+            headers: ["RUTA: ${type == "AM" ? "SAN CRISTOBAL - SANTA CRUZ" : "SANTA CRUZ - SAN CRISTOBAL"}","FECHA: $date","HORA DE SALIDA: ${((type == "AM") ? "07:00" : "15:00")}"],
             headerStyle: const pw.TextStyle(fontSize: 6),
             cellPadding: pw.EdgeInsets.symmetric(vertical: 1),
             data: [[],[]],
@@ -88,6 +88,30 @@ class PDFParts {
             cellPadding: pw.EdgeInsets.symmetric(vertical: 1),
             data: [[],[]],
           ),
+        ]
+    );
+  }
+  pw.Widget buildFooterReport (pw.Context context, List<ReservasModel> items){
+    const _borderStyle = pw.BorderSide(width: 0.5);
+    int total = 0;
+    int recuperar = 0;
+    items.forEach((element) {
+      total += element.precio;
+      if (element.pagado == false){
+        recuperar += element.precio;
+      }
+    });
+    return pw.Column(
+        children: [
+          pw.Table.fromTextArray(
+            border: const pw.TableBorder(left: _borderStyle, right:_borderStyle ,top: _borderStyle,bottom:_borderStyle,),
+            headers: ["Ventas","Recuperado","Por Recuperar"],
+            headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10),
+            cellPadding: const pw.EdgeInsets.only(top: 5, bottom: 5, right: 0, left: 0),
+            cellAlignment: pw.Alignment.center,
+            data: [[total, total-recuperar, recuperar]],
+          ),
+
         ]
     );
   }

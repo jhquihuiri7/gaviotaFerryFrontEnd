@@ -1,7 +1,4 @@
-import 'package:darwin_scuba_dive/src/model/reservas_model.dart';
-import 'package:darwin_scuba_dive/src/utils/logic_daily.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:flutter/material.dart';
+import 'package:darwin_scuba_dive/src/utils/export_widgets.dart';
 
 class EditWidget {
   void showAlert(BuildContext context, ReservasModel element){

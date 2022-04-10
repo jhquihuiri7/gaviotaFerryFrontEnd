@@ -40,6 +40,7 @@ dependencies:
   universal_html: ^2.0.8
   rflutter_alert: ^2.0.4
   fab_circular_menu: ^1.0.0
+  excel: ^2.0.0-null-safety-3
 
 
 dev_dependencies:

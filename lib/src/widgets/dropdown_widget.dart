@@ -1,7 +1,5 @@
-import 'package:darwin_scuba_dive/src/provider/ventas_provider.dart';
 import 'package:darwin_scuba_dive/src/utils/export_widgets.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 class DropDownWidget extends StatefulWidget {
   final String option;
   const DropDownWidget({required this.option});
@@ -15,7 +13,6 @@ class _DropDownWidgetState extends State<DropDownWidget> {
   bool dropdownValueChange = false;
   @override
   Widget build(BuildContext context) {
-    //String dropdownValue = (widget.option == "ruta") ? "SC-SX" : (widget.option == "precio") ? "25" : "Permanente";
     final ventasProvider = Provider.of<VentasProvider>(context);
     String _selectInitialValue(){
       if (widget.option == "ruta"){
@@ -30,16 +27,11 @@ class _DropDownWidgetState extends State<DropDownWidget> {
       }
     }
     String _selectStatus (){
-      if (ventasProvider.autocompleteUser.referencia == ""){
-        dropdownValueStatus = "Permanente";
-      }else {
-        if (ventasProvider.autocompleteUser.status != ""){
-          dropdownValueStatus = ventasProvider.autocompleteUser.status;
-        }
-        setState(() {
-
-        });
+      if (ventasProvider.autocompleteUser.status != ""){
+        dropdownValueStatus = ventasProvider.autocompleteUser.status;
       }
+      setState(() {}
+      );
       return dropdownValueStatus;
     }
     List<String> _selectValueOptions(){

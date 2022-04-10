@@ -1,13 +1,7 @@
-import 'package:darwin_scuba_dive/src/model/reservas_model.dart';
 import 'package:darwin_scuba_dive/src/utils/export_widgets.dart';
-import 'package:darwin_scuba_dive/src/utils/logic_daily.dart';
-import 'package:darwin_scuba_dive/src/widgets/cell_widget.dart';
-import 'package:darwin_scuba_dive/src/widgets/edit_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'colum_generator_daily_widget.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
-//import 'dart:io';
+export 'package:intl/intl.dart';
 
 class ColumnGeneratorDailyWidget extends StatefulWidget {
   const ColumnGeneratorDailyWidget({Key? key}) : super(key: key);
@@ -20,14 +14,7 @@ class _ColumnGeneratorDailyWidgetState extends State<ColumnGeneratorDailyWidget>
   @override
   String time = "Todo";
   String timeBefore = "Todo";
-  String standarizeDate (String date){
-    DateTime dateTimeNow = DateTime.parse("${DateTime.now().year}${(DateTime.now().month< 10)?0:""}${DateTime.now().month}${(DateTime.now().day< 10)?0:""}${DateTime.now().day}");
-    if (dateTimeNow.microsecondsSinceEpoch % 86400000000 / 86400000000 == 0.25){
-      return (int.parse(date) + 3600000000).toString();
-    }else {
-      return date;
-    }
-  }
+
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final ventasProvider = Provider.of<VentasProvider>(context);
@@ -54,15 +41,12 @@ class _ColumnGeneratorDailyWidgetState extends State<ColumnGeneratorDailyWidget>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CellWidget(cellWidth: 0.03, value: (element.edad < 3) ? "" : "${id++}", type: "raw",),
-                      //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? Container():
-                      CellWidget(cellWidth: 0.1, value: DateFormat('dd-MM-yyyy').format(DateTime.fromMicrosecondsSinceEpoch(int.parse(element.fReserva))), type: "raw",),
+                      CellWidget(cellWidth: 0.1, value: DateFormat('dd-MM-yyyy').format(DateTime.fromMicrosecondsSinceEpoch(StandarizeDate().standarizeDate(int.parse(element.fReserva)))), type: "raw",),
                       CellWidget(cellWidth: 0.2, value: element.referencia, type: "raw",),
                       CellWidget(cellWidth: 0.15, value: element.proveedor, type: "raw",),
                       CellWidget(cellWidth: 0.1, value: element.cedula, type: "raw",),
                       CellWidget(cellWidth: 0.1, value: "\$${element.precio}", type: "raw",),
-                      //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? Container():
                       CellWidget(cellWidth: 0.2, value: element.observacion, type: "raw",),
-                      //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? size.width *0.3 :
                       Container(width: size.width * 0.1,
                         child:Row(
                           children: [
@@ -85,7 +69,7 @@ class _ColumnGeneratorDailyWidgetState extends State<ColumnGeneratorDailyWidget>
                         ),
                       )
                     ]
-                ),
+                    ),
                   )
                 );
                 rows.add(widgetTemp);
@@ -103,10 +87,8 @@ class _ColumnGeneratorDailyWidgetState extends State<ColumnGeneratorDailyWidget>
                           style: Style().datesStyle,
                           onPressed: (){
                             DatePickerFunction().datePicker(context, "daily");
-
                           },
-                          //Platform.isAndroid || Platform.isMacOS || Platform.isIOS (Platform.isWindows)? int.parse(ventasProvider.dateDaily) + 86400000000 :
-                          child: Text(DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(int.parse(standarizeDate(ventasProvider.dateDaily)))), style: Style().dateStyle,)
+                          child: Text(DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(StandarizeDate().standarizeDate(int.parse(ventasProvider.dateDaily)))), style: Style().dateStyle,)
                       ),
                       SizedBox(width: 40),
                       DropdownButton(
@@ -131,15 +113,12 @@ class _ColumnGeneratorDailyWidgetState extends State<ColumnGeneratorDailyWidget>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CellWidget(cellWidth: 0.03, value: "Id", type: "col",),
-                        //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? Container():
                         CellWidget(cellWidth: 0.1, value: "Fecha Reserva", type: "col",),
                         CellWidget(cellWidth: 0.2, value: "Referencia", type: "col",),
                         CellWidget(cellWidth: 0.15, value: "Proveedor", type: "col",),
                         CellWidget(cellWidth: 0.1, value: "Cédula", type: "col",),
                         CellWidget(cellWidth: 0.1, value: "Precio", type: "col",),
-                        //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? Container():
                         CellWidget(cellWidth: 0.2, value: "Observacion", type: "col",),
-                        //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? 0.3 :
                         CellWidget(cellWidth: 0.1, value: "Acciones", type: "col",),
                       ],
                     ),
@@ -166,10 +145,8 @@ class _ColumnGeneratorDailyWidgetState extends State<ColumnGeneratorDailyWidget>
                           style: Style().datesStyle,
                           onPressed: (){
                             DatePickerFunction().datePicker(context, "daily");
-
                           },
-                          //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS)? int.parse(ventasProvider.dateDaily) + 86400000000 :
-                          child: Text(DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(int.parse(standarizeDate(ventasProvider.dateDaily)))), style: Style().dateStyle,)
+                          child: Text(DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(StandarizeDate().standarizeDate(int.parse(ventasProvider.dateDaily)))), style: Style().dateStyle,)
                       ),
                       SizedBox(width: 40),
                       DropdownButton(
@@ -194,15 +171,12 @@ class _ColumnGeneratorDailyWidgetState extends State<ColumnGeneratorDailyWidget>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CellWidget(cellWidth: 0.03, value: "Id", type: "col",),
-                        //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? Container():
                         CellWidget(cellWidth: 0.1, value: "Fecha Reserva", type: "col",),
                         CellWidget(cellWidth: 0.2, value: "Referencia", type: "col",),
                         CellWidget(cellWidth: 0.15, value: "Proveedor", type: "col",),
                         CellWidget(cellWidth: 0.1, value: "Cédula", type: "col",),
                         CellWidget(cellWidth: 0.1, value: "Precio", type: "col",),
-                        //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? Container():
                         CellWidget(cellWidth: 0.2, value: "Observacion", type: "col",),
-                        //(Platform.isAndroid || Platform.isMacOS || Platform.isIOS) ? 0.3 :
                         CellWidget(cellWidth: 0.1, value: "Acciones", type: "col",),
                       ],
                     ),
@@ -213,7 +187,6 @@ class _ColumnGeneratorDailyWidgetState extends State<ColumnGeneratorDailyWidget>
                 ],
               );
             }
-
         }
     );
   }

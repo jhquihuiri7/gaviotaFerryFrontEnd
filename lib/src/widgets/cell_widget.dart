@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:darwin_scuba_dive/src/utils/export_widgets.dart';
 class CellWidget extends StatelessWidget {
   final double cellWidth;
   final String value;

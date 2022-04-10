@@ -1,6 +1,5 @@
-import 'package:darwin_scuba_dive/src/provider/ventas_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:darwin_scuba_dive/src/utils/export_widgets.dart';
+
 class TextFormFieldWidget extends StatefulWidget {
   final double width;
   final String text;
@@ -13,13 +12,11 @@ class TextFormFieldWidget extends StatefulWidget {
 }
 
 class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
-  //final controller = TextEditingController();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
   }
   @override
   void dispose() {

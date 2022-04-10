@@ -1,6 +1,4 @@
 import 'package:darwin_scuba_dive/src/utils/export_widgets.dart';
-import 'package:flutter/material.dart';
-
 
 class DrawerWidget extends StatelessWidget {
 

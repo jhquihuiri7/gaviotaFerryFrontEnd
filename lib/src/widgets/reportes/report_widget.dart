@@ -1,10 +1,17 @@
+import 'dart:io';
+
 import 'package:darwin_scuba_dive/src/model/reporte_model.dart';
 import 'package:darwin_scuba_dive/src/utils/logic_report.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:excel/excel.dart';
+
+import '../../utils/export_widgets.dart';
 class ReportWidget extends StatelessWidget {
   final ReporteModel reportModel;
-  ReportWidget({required this.reportModel});
+  final int initialDate;
+  final int endDate;
+  ReportWidget({required this.reportModel, required this.initialDate, required this.endDate});
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -55,7 +62,25 @@ class ReportWidget extends StatelessWidget {
                   ),
                   child: Text(element.proveedor, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white))
               ),
-              Text("TOTAL: ${element.total.toString()}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18))],
+              Text("TOTAL: ${element.total.toString()}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+              IconButton(
+                  onPressed: (){
+                    var excel = Excel.createExcel(); // automatically creates 1 empty sheet: Sheet1
+                    excel.rename('Sheet1', element.proveedor);
+                    Sheet sheetObject = excel[element.proveedor];
+                    List<String> dataList = ["", "DE ${element.proveedor} A GAVIOTA"];
+                    sheetObject.insertRowIterables(dataList, 0);
+                    sheetObject.appendRow(["Fecha Viaje", "Ruta", "Referencia", "Precio"]);
+                    element.detallePasajero.forEach((detalle) {
+                      sheetObject.appendRow([(DateFormat("dd/MM/yyyy").format(DateTime.fromMicrosecondsSinceEpoch(StandarizeDate().standarizeDate(int.parse(detalle.fViaje))))), detalle.ruta, detalle.referencia,detalle.precio]);
+                    });
+                    sheetObject.appendRow(["", "", "TOTAL",element.total]);
+                    // Save the Changes in file
+                    excel.save(fileName: 'Reporte ${element.proveedor} - GAVIOTA ${StandarizeDate().getStringDate(DateTime.fromMicrosecondsSinceEpoch(StandarizeDate().standarizeDate(initialDate)))}"-"${
+                        StandarizeDate().getStringDate(DateTime.fromMicrosecondsSinceEpoch(StandarizeDate().standarizeDate(endDate)))}.xlsx');
+                  },
+                  icon: Image(image: AssetImage("assets/excel_icon.png"), fit: BoxFit.contain,))
+            ],
           )
       );
       widgetCobros.add(detalleCobroHeader);
