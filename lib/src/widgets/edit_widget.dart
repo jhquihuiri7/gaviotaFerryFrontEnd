@@ -93,6 +93,18 @@ class EditWidget {
                   }
                 },
               ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.note_outlined),
+                  labelText: 'Fecha',
+                ),
+                onSaved: (value){
+
+                },
+                onTap: (){
+                  //DatePickerFunction().datePicker(context, "daily");
+                },
+              ),
             ],
           ),
         ),

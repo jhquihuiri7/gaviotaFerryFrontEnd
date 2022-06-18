@@ -1,4 +1,5 @@
 import 'package:darwin_scuba_dive/src/model/reservas_model.dart';
+import 'package:darwin_scuba_dive/src/utils/varibles.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 class PDFParts {
@@ -76,7 +77,7 @@ class PDFParts {
         children: [
           pw.Table.fromTextArray(
             border: const pw.TableBorder(left: _borderStyle, right:_borderStyle ,top: _borderStyle,bottom:_borderStyle,),
-            headers: ["CAP. PABLO VERA S."],
+            headers: [Variables().capitanName],
             headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10),
             cellPadding: pw.EdgeInsets.only(top: 30, bottom: 0, right: 0, left: 0),
             data: [[],[]],

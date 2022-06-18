@@ -182,8 +182,8 @@ class _VentasWindowWidgetState extends State<VentasWindowWidget> {
                           _formKey.currentState!.save();
                           Uri url = LogicVentas().addUserUrl(context);
                           http.Response response = await http.post(url);
-                          ventasProvider.dateVenta = DateTime.now();
-                          ventasProvider.reservasModel.fViaje = LogicVentas().getDateTimeNow().toString();
+                          //ventasProvider.dateVenta = DateTime.now();
+                          //ventasProvider.reservasModel.fViaje = LogicVentas().getDateTimeNow().toString();
                           if (response.statusCode == 200) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Reserva ingresada correctamente')),
