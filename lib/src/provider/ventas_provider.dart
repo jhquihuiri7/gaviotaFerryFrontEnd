@@ -19,6 +19,13 @@ class VentasProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  String _updateDateDaily = "0";
+  String get updateDateDaily => _updateDateDaily;
+  set updateDateDaily(String value) {
+    _updateDateDaily = value;
+    notifyListeners();
+  }
+
   bool _pagado = false;
   bool get pagado => _pagado;
   set pagado(bool value) {

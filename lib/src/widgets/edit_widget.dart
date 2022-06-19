@@ -2,6 +2,7 @@ import 'package:darwin_scuba_dive/src/utils/export_widgets.dart';
 
 class EditWidget {
   void showAlert(BuildContext context, ReservasModel element){
+    final dateController = TextEditingController();
     final _formKey = GlobalKey<FormState>();
     Alert(
         context: context,
@@ -94,6 +95,7 @@ class EditWidget {
                 },
               ),
               TextFormField(
+                controller: dateController,
                 decoration: const InputDecoration(
                   icon: Icon(Icons.note_outlined),
                   labelText: 'Fecha',
@@ -101,8 +103,11 @@ class EditWidget {
                 onSaved: (value){
 
                 },
-                onTap: (){
-                  //DatePickerFunction().datePicker(context, "daily");
+                onTap: ()async{
+                  await DatePickerFunction().datePicker(context, "updateDaily");
+                  final ventasProvider = Provider.of<VentasProvider>(context, listen: false);
+                  element.fViaje = ventasProvider.updateDateDaily;
+                  dateController.text = StandarizeDate().getStringDate(DateTime.fromMicrosecondsSinceEpoch(int.parse(element.fViaje)));
                 },
               ),
             ],

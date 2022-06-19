@@ -5,7 +5,6 @@ import 'package:darwin_scuba_dive/src/provider/ventas_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io';
 
 class LogicVentas {
   Future<List<AutocompleteUser>> GetAutocompleteUser () async{
