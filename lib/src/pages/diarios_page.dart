@@ -12,6 +12,7 @@ class DiariosPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final ventasProvider = Provider.of<VentasProvider>(context);
     print(ventasProvider.dateDaily);
     String standarizeDate (String date){

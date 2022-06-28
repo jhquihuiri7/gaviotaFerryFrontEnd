@@ -77,7 +77,7 @@ class PDFParts {
         children: [
           pw.Table.fromTextArray(
             border: const pw.TableBorder(left: _borderStyle, right:_borderStyle ,top: _borderStyle,bottom:_borderStyle,),
-            headers: [Variables().capitanName],
+            headers: [capitanName],
             headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10),
             cellPadding: pw.EdgeInsets.only(top: 30, bottom: 0, right: 0, left: 0),
             data: [[],[]],

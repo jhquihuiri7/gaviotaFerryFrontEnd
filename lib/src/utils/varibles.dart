@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+
+String capitanName = Variables()._capitanName;
 class Variables {
-  String capitanName = "CAP. MIGUEL CRUZ SARMIENTO";
+  late String _capitanName;
 }

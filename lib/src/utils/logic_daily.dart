@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:darwin_scuba_dive/src/utils/varibles.dart';
 import 'package:darwin_scuba_dive/src/model/reservas_model.dart';
 import 'package:darwin_scuba_dive/src/utils/logic_ventas.dart';
 import 'package:flutter/cupertino.dart';

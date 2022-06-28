@@ -60,9 +60,11 @@ class DrawerWidget extends StatelessWidget {
             //),
             const Expanded(child: SizedBox()),
             ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text("Cerrar Sesión"),
-              onTap: (){},
+              leading: const Icon(Icons.settings),
+              title: const Text("Configuración"),
+              onTap: (){
+                Navigator.pushNamed(context, "configuracion");
+              },
             ),
           ],
         )
