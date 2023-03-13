@@ -15,9 +15,9 @@ class PDFParts {
       item.status,
       (typeTable == "Report") ? (item.pagado == true) ? "Ok" : "Pendiente" : item.observacion,
     ]).toList();
-    for (var i  = _id; i <= 38; i++){
-      data.add(["$i","","","","","",""]);
-    }
+    //for (var i  = _id; i <= 38; i++){
+    //  data.add(["$i","","","","","",""]);
+    //}
     return pw.Column(
         children: [
           pw.Table.fromTextArray(

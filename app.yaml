@@ -1,4 +1,4 @@
-env: standard
+flutter build apk --no-tree-shake-iconsenv: standard
 runtime: nodejs14
 
 handlers:
